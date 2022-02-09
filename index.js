@@ -11,9 +11,6 @@ require('dotenv').config()
 const port = 5000;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.azz4g.mongodb.net/burjAlArab?retryWrites=true&w=majority`;
 
-// const password = 'yhEx3N6zPIfXxL4t';
-// const user = 'arabian';
-
 const app = express();
 
 app.use(cors());
@@ -24,7 +21,7 @@ const serviceAccount = require("./configs/burj-al-arab-6a60e-firebase-adminsdk-j
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://burj-al-arab.firebaseio.com'
+  databaseURL: process.env.FIREBASE_DB
 });
 
 // getAuth().currentUser.getIdToken(true)
@@ -61,7 +58,6 @@ client.connect(err => {
       .then(result => {
         res.send(result.insertedCount > 0);
       })
-    console.log(newBooking);
   })
 
   app.get('/bookings', (req, res) => {
@@ -97,11 +93,5 @@ client.connect(err => {
 
   // client.close();
 });
-
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
 app.listen(port)
